@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PVSAB Case Study — Module 7</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: Georgia, 'Times New Roman', serif;
+      background: #f5f3ee;
+      color: #1a1a1a;
+      padding: 2rem 1rem;
+      min-height: 100vh;
+    }
+    .page {
+      max-width: 780px;
+      margin: 0 auto;
+      background: #fff;
+      border: 1px solid #d0ccc0;
+      padding: 3rem 3.5rem;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+    }
+    .stamp {
+      display: inline-block;
+      border: 2px solid #b33030;
+      color: #b33030;
+      font-family: Arial, sans-serif;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 10px;
+      letter-spacing: 0.15em;
+      transform: rotate(-2deg);
+      margin-bottom: 1rem;
+    }
+    .case-id {
+      font-family: Arial, sans-serif;
+      font-size: 11px;
+      color: #666;
+      letter-spacing: 0.04em;
+      margin-bottom: 0.4rem;
+    }
+    .header {
+      border-bottom: 2px solid #1a1a1a;
+      padding-bottom: 1.2rem;
+      margin-bottom: 1.8rem;
+    }
+    h1 {
+      font-size: 26px;
+      font-weight: 700;
+      line-height: 1.25;
+      margin-bottom: 0.3rem;
+    }
+    .subtitle {
+      font-family: Arial, sans-serif;
+      font-size: 13px;
+      color: #555;
+      margin-bottom: 0.8rem;
+    }
+    .meta-row {
+      font-family: Arial, sans-serif;
+      font-size: 12px;
+      color: #555;
+      display: flex;
+      gap: 2.5rem;
+      flex-wrap: wrap;
+      margin-bottom: 0.5rem;
+    }
+    .meta-row b { color: #1a1a1a; font-weight: 600; }
+    .to-line {
+      font-family: Arial, sans-serif;
+      font-size: 13px;
+      color: #555;
+      margin-top: 0.5rem;
+    }
+    .to-line b { color: #1a1a1a; }
+    .section { margin-bottom: 2rem; }
+    .section-title {
+      font-family: Arial, sans-serif;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #555;
+      border-bottom: 0.5px solid #ccc;
+      padding-bottom: 4px;
+      margin-bottom: 0.9rem;
+    }
+    p {
+      font-size: 14px;
+      line-height: 1.75;
+      margin-bottom: 0.75rem;
+    }
+    p:last-child { margin-bottom: 0; }
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      margin: 0.5rem 0;
+    }
+    .data-table th {
+      font-family: Arial, sans-serif;
+      font-size: 11px;
+      font-weight: 600;
+      color: #555;
+      text-align: left;
+      padding: 5px 10px 5px 0;
+      border-bottom: 1px solid #ccc;
+    }
+    .data-table td {
+      padding: 7px 10px 7px 0;
+      border-bottom: 0.5px solid #e0ddd5;
+      vertical-align: top;
+      line-height: 1.5;
+    }
+    .data-table td.num {
+      font-variant-numeric: tabular-nums;
+      white-space: nowrap;
+      text-align: right;
+    }
+    .data-table tr.category td {
+      font-family: Arial, sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      color: #555;
+      padding-top: 12px;
+      padding-bottom: 2px;
+      border-bottom: none;
+      letter-spacing: 0.04em;
+    }
+    .data-table tr.subtotal td {
+      font-weight: 700;
+      border-top: 1px solid #aaa;
+      border-bottom: 1px solid #aaa;
+      background: #f7f5f0;
+      padding-top: 6px;
+      padding-bottom: 6px;
+    }
+    .data-table tr.net-profit td {
+      font-weight: 700;
+      font-size: 14px;
+      border-top: 2px solid #1a1a1a;
+      border-bottom: 2px solid #1a1a1a;
+      padding-top: 7px;
+      padding-bottom: 7px;
+    }
+    .question-box {
+      background: #f7f5f0;
+      border-left: 4px solid #1a1a1a;
+      padding: 1.1rem 1.4rem;
+      margin: 2rem 0 1.5rem;
+    }
+    .q-label {
+      font-family: Arial, sans-serif;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #666;
+      margin-bottom: 0.5rem;
+    }
+    .question-box p { font-size: 14px; margin-bottom: 0.4rem; }
+    .question-box .formula {
+      font-family: Arial, sans-serif;
+      font-size: 12px;
+      color: #666;
+      margin-top: 0.5rem;
+    }
+    .answer-area { margin-top: 1.5rem; }
+    .answer-row {
+      display: flex;
+      gap: 10px;
+      align-items: stretch;
+    }
+    .answer-row input {
+      flex: 1;
+      font-family: 'Courier New', monospace;
+      font-size: 15px;
+      padding: 10px 14px;
+      border: 1px solid #bbb;
+      background: #fff;
+      color: #1a1a1a;
+      outline: none;
+    }
+    .answer-row input:focus { border-color: #555; }
+    .answer-row button {
+      padding: 10px 28px;
+      font-family: Arial, sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      background: #1a1a1a;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+    }
+    .answer-row button:hover { background: #333; }
+    .error-msg {
+      font-family: Arial, sans-serif;
+      font-size: 12px;
+      color: #b33030;
+      margin-top: 7px;
+      min-height: 18px;
+    }
+    .reveal {
+      display: none;
+      margin-top: 2rem;
+      border: 1px solid #c8c4b8;
+      background: #f7f5f0;
+      padding: 1.5rem;
+    }
+    .reveal.open { display: block; }
+    .reveal-label {
+      font-family: Arial, sans-serif;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #555;
+      margin-bottom: 0.6rem;
+    }
+    .reveal p { font-size: 14px; margin-bottom: 0.5rem; }
+    .reveal-link {
+      display: inline-block;
+      margin-top: 0.8rem;
+      font-family: 'Courier New', monospace;
+      font-size: 14px;
+      color: #1a4a8a;
+      text-decoration: underline;
+      word-break: break-all;
+    }
+    .footnote {
+      font-family: Arial, sans-serif;
+      font-size: 10.5px;
+      color: #888;
+      margin-top: 2.5rem;
+      border-top: 0.5px solid #ccc;
+      padding-top: 0.9rem;
+      line-height: 1.7;
+    }
+    @media (max-width: 600px) {
+      .page { padding: 1.5rem 1.25rem; }
+      h1 { font-size: 20px; }
+      .meta-row { gap: 1rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+
+    <div class="header">
+      <div class="stamp">Confidential</div>
+      <div class="case-id">Case No. PVSAB-2026-Q1 &nbsp;·&nbsp; </div>
+      <h1>Pojkvänsuthyrning AB — Q1 2026 profitability analysis</h1>
+      <p class="subtitle">Nordic companionship deployment services, Nigerian market division</p>
+      <div class="meta-row">
+        <span><b>Industry:</b> Cross-cultural boyfriend logistics</span>
+        <span><b>Region:</b> Nigeria (primary), Gothenburg transit hub</span>
+        <span><b>Period:</b> Q1 2026</span>
+      </div>
+      <p class="to-line">Prepared for: <b>Ifeoma</b> &nbsp;·&nbsp; Advanced Corporate Finance, Module 7</p>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Company background</div>
+      <p>Pojkvänsuthyrning AB ("PVSAB") was incorporated in 2025 in Stockholm, Sweden, to serve the growing demand for Nordic companionship experiences in the West African market. The company recruits, trains, and deploys Swedish boyfriends on medium- and long-term contracts to Nigerian clients (informally referred to as “soft-life boys” in local markets). Core service offerings include reading stories, sleep assistance, complement giving and sink maintenance.</p>
+      <p>PVSAB's operational model relies on a fleet of assets (the boyfriends) maintained to strict quality standards. Asset durability has emerged as a key strategic challenge following repeated exposure to client cooking environments.</p>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Q1 2026 financial statements</div>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th style="width:30%">Line item</th>
+            <th style="width:50%">Detail</th>
+            <th class="num" style="width:20%">SEK</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="category"><td colspan="3">Revenue</td></tr>
+          <tr>
+            <td>Standard deployment fees</td>
+            <td>280 contracts × 4 wks avg × 400 SEK/day × 5 days</td>
+            <td class="num">2,240,000</td>
+          </tr>
+          <tr>
+            <td>Premium lovemaking package</td>
+            <td>94 upsells × 800 SEK ("Three years of sex crammed into one night, every night.")</td>
+            <td class="num">775,200</td>
+          </tr>
+          <tr>
+            <td>Express booking surcharge</td>
+            <td>73 same-week bookings × 500 SEK</td>
+            <td class="num">36,500</td>
+          </tr>
+          <tr class="subtotal">
+            <td>Total revenue</td>
+            <td></td>
+            <td class="num">3,051,700</td>
+          </tr>
+          <tr class="category"><td colspan="3">Operating costs</td></tr>
+          <tr>
+            <td>Asset depreciation</td>
+            <td>Wear &amp; tear on deployed boyfriend fleet, straight-line method</td>
+            <td class="num">320,000</td>
+          </tr>
+          <tr>
+            <td>Maintenance supplies</td>
+            <td>Apples (12 crates) and date supplies</td>
+            <td class="num">86,500</td>
+          </tr>
+          <tr>
+            <td>Gastrointestinal resilience supplements</td>
+            <td>Prophylactic gut-flora support, post-jollof recovery kits, antacid reserves</td>
+            <td class="num">107,200</td>
+          </tr>
+          <tr>
+            <td>Cultural acclimatisation training</td>
+            <td>Pepper tolerance grading (levels 1–5), Afrobeats rhythm certification (still pending), Intro to Nigerian Pidgin (tested in simulated dream environments with real aunties in buses)</td>
+            <td class="num">192,800</td>
+          </tr>
+          <tr>
+            <td>Logistics &amp; deployment</td>
+            <td>SJ rail passes (Stockholm–Gothenburg, 40 return trips)</td>
+            <td class="num">112,400</td>
+          </tr>
+          <tr>
+            <td>Opportunity cost</td>
+            <td>Foregone alternative deployments (assessed nil per board resolution Q1-2026-03)</td>
+            <td class="num">0</td>
+          </tr>
+          <tr class="subtotal">
+            <td>Total costs</td>
+            <td></td>
+            <td class="num">818,900</td>
+          </tr>
+          <tr class="net-profit">
+            <td>Net profit</td>
+            <td></td>
+            <td class="num">2,101,400</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="question-box">
+      <div class="q-label">Exam question — mandatory for course completion</div>
+      <p>Based on the Q1 2026 financial statements for Pojkvänsuthyrning AB, calculate the company's <strong>net profit margin</strong> as a percentage of total revenue. Round your answer to the nearest whole number and enter it below to continue.</p>
+      <p class="formula">Net profit margin (%) = You should know this :P</p>
+    </div>
+
+    <div class="answer-area">
+      <div class="answer-row">
+        <input type="number" id="answer-input" placeholder="Enter %" min="0" max="100" />
+        <button onclick="checkAnswer()">Submit</button>
+      </div>
+      <div class="error-msg" id="error-msg"></div>
+    </div>
+
+    <div class="reveal" id="reveal-section">
+      <div class="reveal-label">Access granted. Outstanding analytical performance, Ifeoma.</div>
+      <p>Your submission has been verified. You have demonstrated a rare command of cross-cultural boyfriend economics. The examination committee is pleased.</p>
+      <p style="color:#555; font-size:13px; font-family:Arial,sans-serif;">Proceed using the link below.</p>
+      <a class="reveal-link" href="REPLACE_WITH_YOUR_URL">→ next-module-url-goes-here</a>
+    </div>
+
+  </div>
+
+  <script>
+    function checkAnswer() {
+      var input = document.getElementById('answer-input');
+      var error = document.getElementById('error-msg');
+      var reveal = document.getElementById('reveal-section');
+      var val = parseInt(input.value, 10);
+      var correct = Math.round((2101400 / 3051700) * 100);
+      if (isNaN(val)) {
+        error.textContent = 'Please enter a number.';
+        return;
+      }
+      if (val === correct) {
+        error.textContent = '';
+        reveal.classList.add('open');
+        reveal.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      } else {
+        error.textContent = 'Incorrect. Review the financials carefully and try again.';
+        input.value = '';
+        input.focus();
+      }
+    }
+    document.getElementById('answer-input').addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') checkAnswer();
+    });
+  </script>
+</body>
+</html>
